@@ -1,0 +1,40 @@
+class Solution {
+	static class pair{
+		int a;
+		int b;
+		int diff;
+		public pair(int a, int b,int diff) {
+			this.a=a;
+			this.b=b;
+			this.diff=diff;
+		}
+	}
+	
+	public static long maxTip(int n, int x, int y, int[] arr, int[] brr) {
+        ArrayList<pair> a1=new ArrayList<>();
+        for(int i=0;i<n;i++) {
+        	a1.add(new pair(arr[i],brr[i],Math.abs(arr[i]-brr[i])));
+        }
+        Collections.sort(a1,(a,b)->(b.diff-a.diff));
+        long sum=0;
+        for(int i=0;i<n;i++) {
+        	if(x==0) {
+        		sum+=a1.get(i).b;
+        		
+        	}else if(y==0) {
+        		sum+=a1.get(i).a;
+        	}else {
+        		if(a1.get(i).a>a1.get(i).b) {
+        			sum+=a1.get(i).a;
+        			x--;
+        		}else {
+        			sum+=a1.get(i).b;
+        			y--;
+        		}
+        		
+        	}
+        }
+        
+		return sum;
+    }
+}
