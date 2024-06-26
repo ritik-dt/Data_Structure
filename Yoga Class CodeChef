@@ -1,0 +1,42 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Codechef
+{
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		// your code goes here
+		Scanner sc = new Scanner(System.in);
+		
+		int T = sc.nextInt();
+		
+		for(int i = 0; i<T; i++) {
+		    int N = sc.nextInt();
+		    int X = sc.nextInt();
+		    int Y = sc.nextInt();
+		    
+		    
+		    int maxEarnings = getMaxEarnings(N,X,Y);
+		    System.out.println(maxEarnings);
+		}
+		sc.close();
+	}
+	
+	
+	private static int getMaxEarnings(int N, int X, int Y){
+	    int MaxEarnings = 0;
+	    
+	    for(int type2Sessions = 0; type2Sessions <= N / 2; type2Sessions++){
+	        int remainingHours = N - (type2Sessions * 2); 
+	        int type1Sessions = remainingHours; 
+	        int earnings = (type1Sessions * X) + (type2Sessions * Y); 
+	        
+	        if(earnings > MaxEarnings) {
+	            MaxEarnings = earnings;
+	        }
+	    }
+	    
+	    return MaxEarnings;
+	}
+}
