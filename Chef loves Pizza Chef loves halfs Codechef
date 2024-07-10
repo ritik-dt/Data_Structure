@@ -1,0 +1,33 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Codechef
+{
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		// your code goes here
+     Scanner sc = new Scanner(System.in);
+     
+     int T = sc.nextInt();
+     int[] results = new int[T];
+     
+     for(int i=0; i<T; i++){
+         int X = sc.nextInt();
+         results[i] = findSmallerSlices(X);
+     }
+     
+     for(int result : results) {
+         System.out.println(2*result);
+         
+     }
+     sc.close();
+	}
+	private static int findSmallerSlices(int X){
+	    if((X &(X-1))==0){
+	        return 0; 
+	    }
+	    int highestPowerOf2 = Integer.highestOneBit(X);
+	    return X - highestPowerOf2;
+	}
+}
