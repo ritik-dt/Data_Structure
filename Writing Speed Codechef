@@ -1,0 +1,21 @@
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+
+class Codechef
+{
+	public static void main (String[] args) throws java.lang.Exception
+	{
+		// your code goes here
+		Scanner sc = new Scanner(System.in);
+		int input = sc.nextInt();
+		int check = input*5;
+		
+		if(check > 60){
+		    System.out.println("No");
+		}else{
+		    System.out.println("YES");
+		}
+
+	}
+}
