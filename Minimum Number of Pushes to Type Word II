@@ -1,0 +1,39 @@
+class Solution {
+    public int minimumPushes(String word) {
+        int[] c = new int[123];
+        
+        // Count the frequency of each character
+        for (int i = 0; i < word.length(); i++) {
+            c[word.charAt(i)]++;
+        }
+
+        boolean sorted;
+
+        do {
+            sorted = true;
+
+            for (int i = 97; i < 122; i++) {
+                if (c[i] < c[i + 1]) {
+                    int temp = c[i];
+                    c[i] = c[i + 1];
+                    c[i + 1] = temp;
+
+                    sorted = false;
+                }
+            }
+
+        } while (!sorted);
+
+        int steps = 0;
+        int count = 0;
+
+        for (int i = 97; i < 123; i++) {
+            if (c[i] != 0) {
+                steps += c[i] * (count / 8 + 1);
+                count++;
+            }
+        }
+
+        return steps;
+    }
+}
