@@ -1,0 +1,96 @@
+class Solution {
+   private static List<List<Integer>> adj;
+    private static int[] subtreeSize;
+    private static int[] depth;
+    private static int[][] parent;
+    private static int[] largestSubtreeSize;
+
+    public static ArrayList<Integer> getStability(int n, int q, int[][] edges, int[][] queries) {
+        adj = new ArrayList<>();
+        subtreeSize = new int[n + 1];
+        depth = new int[n + 1];
+        largestSubtreeSize = new int[n + 1];
+
+        // Determine the required depth and parent array sizes
+        int log = 0;
+        while ((1 << log) <= n) log++;
+        parent = new int[n + 1][log];
+
+        for (int i = 0; i <= n; i++) {
+            adj.add(new ArrayList<>());
+        }
+
+        // Build the adjacency list
+        for (int[] edge : edges) {
+            adj.get(edge[0]).add(edge[1]);
+            adj.get(edge[1]).add(edge[0]);
+        }
+
+        // Perform DFS to initialize depth, parent, and subtree sizes
+        dfs(1, -1, 0);
+
+        // Process each query
+        ArrayList<Integer> results = new ArrayList<>();
+        for (int[] query : queries) {
+            int u = query[0], v = query[1];
+            int lcaNode = lca(u, v);
+            int maxComponentSize = n - subtreeSize[lcaNode];
+
+            // The largest component excluding the LCA's subtree.
+            if (largestSubtreeSize[lcaNode] != 0) {
+                maxComponentSize = Math.max(maxComponentSize, largestSubtreeSize[lcaNode]);
+            }
+
+            results.add(maxComponentSize);
+        }
+        return results;
+    }
+
+    private static void dfs(int node, int par, int dep) {
+        parent[node][0] = par;
+        depth[node] = dep;
+        subtreeSize[node] = 1;
+        int largest = 0;
+
+        for (int i = 1; i < parent[node].length; i++) {
+            if (parent[node][i - 1] != -1) {
+                parent[node][i] = parent[parent[node][i - 1]][i - 1];
+            }
+        }
+
+        for (int child : adj.get(node)) {
+            if (child != par) {
+                dfs(child, node, dep + 1);
+                subtreeSize[node] += subtreeSize[child];
+                largest = Math.max(largest, subtreeSize[child]);
+            }
+        }
+
+        largestSubtreeSize[node] = largest;
+    }
+
+    private static int lca(int u, int v) {
+        if (depth[u] < depth[v]) {
+            int temp = u;
+            u = v;
+            v = temp;
+        }
+
+        int log = parent[u].length;
+        for (int i = log - 1; i >= 0; i--) {
+            if (depth[u] - (1 << i) >= depth[v]) {
+                u = parent[u][i];
+            }
+        }
+
+        if (u == v) return u;
+
+        for (int i = log - 1; i >= 0; i--) {
+            if (parent[u][i] != parent[v][i]) {
+                u = parent[u][i];
+                v = parent[v][i];
+            }
+        }
+        return parent[u][0];
+    }
+}
