@@ -15,5 +15,5 @@ class Codechef
         System.out.println(output);
         
         sc.close();
-	}
+   }
 }
